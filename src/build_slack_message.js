@@ -47,10 +47,21 @@ function setFooterMessage(itemCreatedAt) {
 }
 
 function deriveTimeStale(itemCreatedAt) {
-  var createdAt = new Date(itemCreatedAt);
-  var timeNow = new Date();
+  var workingDate = new Date(itemCreatedAt);
+  workingDate.setHours(0,0,0,0)
+  var today = new Date();
+  today.setHours(0,0,0,0)
 
-  return Math.round((timeNow-createdAt)/(1000*60*60*24));
+  var staleness = 0
+  while(workingDate < today) {
+    if(workingDate.getDay() != 0 && workingDate.getDay() != 6) {
+      staleness += 1
+    }
+
+    workingDate.setDate(workingDate.getDate() + 1)
+  }
+
+  return staleness
 }
 
 function dynamicSort(property) {
